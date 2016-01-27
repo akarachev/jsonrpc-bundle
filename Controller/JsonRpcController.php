@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Controller for executing JSON-RPC 2.0 requests
@@ -163,6 +164,8 @@ class JsonRpcController extends ContainerAware
 
             try {
                 $result = call_user_func_array(array($service, $method), $params);
+            } catch(AccessDeniedHttpException $exception) {
+                return $this->getAccessErrorResponse(self::INTERNAL_ERROR, $requestId, $this->convertExceptionToErrorData($exception));
             } catch (\Exception $e) {
                 return $this->getErrorResponse(self::INTERNAL_ERROR, $requestId, $this->convertExceptionToErrorData($e));
             }
@@ -262,6 +265,20 @@ class JsonRpcController extends ContainerAware
     }
 
     protected function getErrorResponse($code, $id, $data = null)
+    {
+        $response = array('jsonrpc' => '2.0');
+        $response['error'] = $this->getError($code);
+
+        if ($data != null) {
+            $response['error']['data'] = $data;
+        }
+
+        $response['id'] = $id;
+
+        return new Response(json_encode($response), 403, array('Content-Type' => 'application/json'));
+    }
+
+    protected function getAccessErrorResponse($code, $id, $data = null)
     {
         $response = array('jsonrpc' => '2.0');
         $response['error'] = $this->getError($code);
