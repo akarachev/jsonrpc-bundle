@@ -275,7 +275,7 @@ class JsonRpcController extends ContainerAware
 
         $response['id'] = $id;
 
-        return new Response(json_encode($response), 403, array('Content-Type' => 'application/json'));
+        return new Response(json_encode($response), 200, array('Content-Type' => 'application/json'));
     }
 
     protected function getAccessErrorResponse($code, $id, $data = null)
