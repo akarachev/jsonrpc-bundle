@@ -2,10 +2,11 @@
 
 namespace Wa72\JsonRpcBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -42,8 +43,10 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  * @author Christoph Singer
  *
  */
-class JsonRpcController extends ContainerAware
+class JsonRpcController implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+    
     const PARSE_ERROR = -32700;
     const INVALID_REQUEST = -32600;
     const METHOD_NOT_FOUND = -32601;
