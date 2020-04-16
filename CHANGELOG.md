@@ -1,3 +1,11 @@
+### v0.6.1 2018-03-10 ###
+-   compatibility with Symfony 4, thanks to @shreypuranik
+-   make unit tests compatible with newer phpunit versions
+
+### v0.6.0 2017-02-09 ###
+-   added compatibility with Symfony 3, thanks to @JasonMiesionczek
+-   minimum required Symfony version is now 2.7
+
 ### v0.5.0 2014-12-17 ###
 -   It is now possible to call methods that require objects as parameters (in previous versions only methods with scalar
     and array parameters could be called). That's why JMSSerializerBundle is now a required dependency.
